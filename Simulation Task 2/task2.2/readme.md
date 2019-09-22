@@ -19,5 +19,5 @@ unzip task2.2
 cd task2.2
 python simulation_task2_2.py
 ```
-
+Please note that the default seed value is 100, update the seed value manaually to match the test condition. Thanks!
 The result of file will store into `task2.2_output.txt`.
