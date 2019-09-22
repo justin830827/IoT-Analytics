@@ -7,12 +7,14 @@ Author: Wen-Han (Justin) Hu (whu24)
 '''
 import random
 import math
-import texttable as tt
 
 random.seed(100)
 
 def simulation(mean_at_RT,mean_at_nonRT,mean_st_RT,mean_st_nonRT):
-	MC, RTCL, nonRTCL, n_RT, n_nonRT, SCL, status, preempt = [0.0], [3.0], [5.0], [0], [0], [4.0], [2], [0.0]
+	MC, RTCL, nonRTCL, n_RT, n_nonRT, SCL, status, preempt = [0.00], [3.00], [5.00], [0], [0], [4.00], [2], [0.00]
+	f = open("task2.2_output.txt", "a")
+	f.write("{}, {}, {}, {}, {}, {}, {}, {}\n".format(MC[-1], RTCL[-1], nonRTCL[-1], n_RT[-1], n_nonRT[-1], SCL[-1], status[-1], preempt[-1]))
+	f.close()
 	event = [RTCL[-1],nonRTCL[-1],SCL[-1]] # 0: SCL, 1: RT, 2: nonRT
 	# simulate MC until MC > 50
 	while MC[-1] < 200:
@@ -96,22 +98,19 @@ def simulation(mean_at_RT,mean_at_nonRT,mean_st_RT,mean_st_nonRT):
 					status.append(2)
 					preempt.append(0)
 					event = [RTCL[-1],nonRTCL[-1],SCL[-1]]
-
-	# print table
-	tab = tt.Texttable()
-	headings = ['MC','RTCL','nonRTCL','n_RT', 'n_nonRT','SCL',
-				'Server Status','Pre-empted remaining service time']
-	tab.header(headings)
-	for row in zip(MC, RTCL, nonRTCL, n_RT, n_nonRT, SCL, status, preempt):
-		tab.add_row(row)
-	print (tab.draw(),file=open("task2.2_output.txt", "a"))
-
+		f = open("task2.2_output.txt", "a")
+		f.write("{}, {}, {}, {}, {}, {}, {}, {}\n"
+				.format(round(MC[-1],2), round(RTCL[-1],2), round(nonRTCL[-1],2), n_RT[-1], n_nonRT[-1], round(SCL[-1],2), status[-1], round(preempt[-1],2)))
+		f.close()
 
 if __name__ == "__main__":
 	mean_at_RT = input("Please Enter mean inter-arrival time of RT messages:")
 	mean_at_nonRT = input("Please Enter mean inter-arrival time of nonRT messages:")
 	mean_st_RT = input("Please Enter mean service time of RT messages:")
 	mean_st_nonRT = input("Please Enter mean service time of nonRT messages:")
+	f = open("task2.2_output.txt", "w")
+	f.write("MC, RTCL, nonRTCL, n_RT, n_nonRT, SCL, Status, Preempted\n")
+	f.close()
 	simulation(int(mean_at_RT),int(mean_at_nonRT),int(mean_st_RT),int(mean_st_nonRT))
 
 
