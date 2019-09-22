@@ -1,5 +1,6 @@
 This readme file is for the instructions to run the script properly.
-I follow the instructions below to run my code:
+
+
 Connect to the eos.
 ```
 ssh <Unity_ID>@remote-linux.eos.ncsu.edu
