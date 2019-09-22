@@ -22,4 +22,4 @@ python simulation_task2_1.py
 ```
 
 The result of file will store into `task2.1_output.txt`.
-The extra two files task2.1_out_task1.*.text are the results from the task 1 hand simulation. 
+The extra two files `task2.1_out_task1.*.txt` are the results from the task 1 hand simulation. 
