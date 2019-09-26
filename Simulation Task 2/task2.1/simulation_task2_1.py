@@ -9,7 +9,7 @@ Author: Wen-Han (Justin) Hu (whu24)
 def simulation(mean_at_RT,mean_at_nonRT,mean_st_RT,mean_st_nonRT):
 	MC, RTCL, nonRTCL, n_RT, n_nonRT, SCL, status, preempt = [0], [3], [5], [0], [0], [4], [2], [0]
 	f = open("task2.1_output.txt", "a")
-	f.write("{}, {}, {}, {}, {}, {}, {}, {}\n".format(MC[-1], RTCL[-1], nonRTCL[-1], n_RT[-1], n_nonRT[-1], SCL[-1], status[-1], preempt[-1]))
+	f.write("\t{}\t| \t{}\t| \t{}\t| \t{}\t| \t{}\t| \t{}\t| \t{}\t| \t {}\t\t|\n".format(MC[-1], RTCL[-1], nonRTCL[-1], n_RT[-1], n_nonRT[-1], SCL[-1], status[-1], preempt[-1]))
 	f.close()
 	event = [RTCL[-1],nonRTCL[-1],SCL[-1]] # 0: SCL, 1: RT, 2: nonRT
 	# simulate MC until MC > 50
@@ -75,8 +75,8 @@ def simulation(mean_at_RT,mean_at_nonRT,mean_st_RT,mean_st_nonRT):
 					preempt.append(0)
 					event = [RTCL[-1],nonRTCL[-1],SCL[-1]]
 		f = open("task2.1_output.txt", "a")
-		f.write("{}, {}, {}, {}, {}, {}, {}, {}\n"
-				.format(round(MC[-1],2), round(RTCL[-1],2), round(nonRTCL[-1],2), n_RT[-1], n_nonRT[-1], round(SCL[-1],2), status[-1], round(preempt[-1],2)))
+		f.write("\t{}\t| \t{}\t| \t{}\t| \t{}\t| \t{}\t| \t{}\t| \t{}\t| \t {}\t\t|\n"
+				.format(MC[-1], RTCL[-1], nonRTCL[-1], n_RT[-1], n_nonRT[-1], SCL[-1], status[-1], preempt[-1]))
 		f.close()
 
 if __name__ == "__main__":
@@ -85,7 +85,7 @@ if __name__ == "__main__":
 	mean_st_RT = input("Please Enter mean service time of RT messages:")
 	mean_st_nonRT = input("Please Enter mean service time of nonRT messages:")
 	f = open("task2.1_output.txt", "w")
-	f.write("MC, RTCL, nonRTCL, n_RT, n_nonRT, SCL, Status, Preempted\n")
+	f.write("\tMC\t| RTCL  |nonRTCL| n_RT  |n_nonRT|  SCL  | Status| Preempted\t|\n")
 	f.close()
 	simulation(int(mean_at_RT),int(mean_at_nonRT),int(mean_st_RT),int(mean_st_nonRT))
 
