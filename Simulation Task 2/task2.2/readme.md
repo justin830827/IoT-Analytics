@@ -7,11 +7,11 @@ ssh <Unity_ID>@remote-linux.eos.ncsu.edu
 ```
 Copy file to eos, scp source targer or git clone
 ```
-scp task2.2.zip <Unity_id>@remote-linux.eos.ncsu.edu:/afs/u​nity.ncsu.edu/users/<first letter of unity_id>/<unity_id>/
+scp whu24_Task2.zip <Unity_id>@remote-linux.eos.ncsu.edu:/afs/u​nity.ncsu.edu/users/<first letter of unity_id>/<unity_id>/
 ```
 To run the script unzip the zipfile and use python compiler
 ```
-unzip task2.2
+unzip whu24_Task2.zip
 python ./task2.2/simulation_task2_2.py
 ```
 Or
