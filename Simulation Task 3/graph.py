@@ -5,6 +5,9 @@ import matplotlib.pyplot as plt
 mean_df = pd.read_csv('mean_outputs.csv',names=["RT_mean", "RT_mean_lower_CI", "RT_mean_upper_CI", "nonRT_mean", "nonRT_mean_lower_CI", "RT_mean_upper_CI"])
 percentile_df = pd.read_csv('95thPercentile_outputs.csv',names=["RT_95th", "RT_95th_lower_CI", "RT_95th_upper_CI", "nonRT_95th", "nonRT_95th_lower_CI", "RT_95th_upper_CI"])
 
+# mean_df.to_csv("mean_outputs.csv")
+# percentile_df.to_csv("95thPercentile_outputs.csv")
+
 # width of the bars
 barWidth = 0.3
  
