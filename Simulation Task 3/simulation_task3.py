@@ -1,7 +1,7 @@
 '''
 This script is for CSC591 IoT Analytics
 
-Title: Simulation Task 2.2
+Title: Simulation Task 3
 Author: Wen-Han (Justin) Hu (whu24)
 
 '''
@@ -29,7 +29,6 @@ def count_std(samples,batch_mean,batch_number):
 		
 def count_mean(samples):
 	return sum(samples) / len(samples)
-
 
 def simulation(mean_at_RT,mean_at_nonRT,mean_st_RT,mean_st_nonRT,m,b):
 	# Initialize simulation params 
@@ -177,7 +176,7 @@ if __name__ == "__main__":
 	batch_number = input("Please enter number of batches:")
 	batch_size = input("Please enter size of batch:")
 
-	# Get 
+	# Get batch results of mean and 95th percentile of nonRT and RT
 	R_RT_mean, R_nonRT_mean, RT_95percent, nonRT_95percent = simulation(int(mean_at_RT),int(mean_at_nonRT),int(mean_st_RT),int(mean_st_nonRT),int(batch_number), int(batch_size))
 	
 	# Count super mean
@@ -212,6 +211,8 @@ if __name__ == "__main__":
 		percentile_writer = csv.writer(csv_file1, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
 		percentile_writer.writerow([RT_batch_percent, RT_95percent_CI[0], RT_95percent_CI[1], nonRT_batch_percent, nonRT_95percent_CI[0], nonRT_95percent_CI[1]])
 
+	# Print the results
+	print("-----------------------------Results----------------------------------")
 	print("RT mean: {}".format(RT_batch_mean))
 	print("nonRT mean: {}".format(nonRT_batch_mean))
 	print("RT mean CI: {}".format(RT_mean_CI))
