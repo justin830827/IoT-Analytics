@@ -12,13 +12,13 @@ scp whu24_Task3.zip <Unity_id>@remote-linux.eos.ncsu.edu:/afs/u​nity.ncsu.edu/
 To run the script unzip the zipfile and use python compiler
 ```
 unzip whu24_task3.zip
-python ./task3/simulation_task3.py
+python ./whu24_task3/simulation_task3.py
 ```
 Or
 ```
 unzip task3
 cd task3
-python ./task3/simulation_task3.py
+python ./whu24_task3/simulation_task3.py
 ```
 
 I used the packages which are not included in the eos original environment, if TA would like to run `graph.py` please select `CSC591_ADBI_v3` in the VCL reservation portal, which is another course I took but already had most of package installed, and run the instructions as below:
