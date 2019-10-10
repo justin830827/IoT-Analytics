@@ -8,6 +8,7 @@ Author: Wen-Han (Justin) Hu (whu24)
 import random
 import math
 import csv
+import sys
 
 # Setup random seed
 random.seed(100)
@@ -74,11 +75,14 @@ def simulation(mean_at_RT,mean_at_nonRT,mean_st_RT,mean_st_nonRT,m,b):
 				at_RT.append(MC[-1])
 				# If RT execute directly, response time = 0
 				if n_RT[-1] == 0:
-					at_RT.pop(0)
-					R_RT.append(0)
+					arrival = at_RT.pop(0)
+					R_RT.append(SCL[-1] - arrival)
 
 			# if nonRT arrive
 			elif index == 1:
+				# Handle arrival nonRT
+				at_nonRT.append(nonRTCL[-1])
+				
 				# if RT still execute or nonRT execute
 				if nonRTCL[-1] < SCL[-1]:
 					MC.append(nonRTCL[-1])
@@ -90,9 +94,6 @@ def simulation(mean_at_RT,mean_at_nonRT,mean_st_RT,mean_st_nonRT,m,b):
 					status.append(status[-1])
 					preempt.append(preempt[-1])
 					event = [ RTCL[-1], nonRTCL[-1], SCL[-1]]
-
-					# Handle arrival nonRT
-					at_nonRT.append(MC[-1])
 
 				# RT done, nonRT is able to execute
 				else:
@@ -106,12 +107,10 @@ def simulation(mean_at_RT,mean_at_nonRT,mean_st_RT,mean_st_nonRT,m,b):
 					preempt.append(preempt[-1])
 					event = [ RTCL[-1], nonRTCL[-1], SCL[-1] ]
 
-					# Handle arrival nonRT and response nonRT
-					at_nonRT.append(MC[-1])
-					# If RT execute directly, response time = 0
-					if n_nonRT[-1] == 0:
-						at_nonRT.pop(0)
-						R_nonRT.append(0) 
+					# If nonRT execute directly, response time = 0
+					if n_nonRT[-1] == n_nonRT[-2]:
+						arrival = at_nonRT.pop(0)
+						R_nonRT.append(MC[-1] - arrival + rand_st_nonRT) 
 
 			# if server idle
 			else:
@@ -129,7 +128,8 @@ def simulation(mean_at_RT,mean_at_nonRT,mean_st_RT,mean_st_nonRT,m,b):
 					
 					# Handle arrival RT and response RT
 					arrival = at_RT.pop(0)
-					R_RT.append(MC[-1] - arrival) 
+					R_RT.append(SCL[-1] - arrival) 
+				
 				else: 
 					# Check preempt first, if there is no preempt, do non_RT
 					if preempt[-1] > 0:
@@ -142,6 +142,7 @@ def simulation(mean_at_RT,mean_at_nonRT,mean_st_RT,mean_st_nonRT,m,b):
 						status.append(2)
 						preempt.append(0)
 						event = [RTCL[-1],nonRTCL[-1],SCL[-1]]
+
 					#  Exexute next non_RT in queue
 					else:
 						MC.append(SCL[-1])
@@ -156,7 +157,8 @@ def simulation(mean_at_RT,mean_at_nonRT,mean_st_RT,mean_st_nonRT,m,b):
 						
 						# Handle arrival RT and response RT
 						arrival = at_nonRT.pop(0)
-						R_nonRT.append(MC[-1] - arrival)
+						R_nonRT.append(MC[-1] - arrival + rand_st_nonRT)
+
 		# Skip the first batch
 		if i == 0:
 			continue
@@ -175,6 +177,11 @@ if __name__ == "__main__":
 	mean_st_nonRT = input("Please enter mean service time of nonRT messages:")
 	batch_number = input("Please enter number of batches:")
 	batch_size = input("Please enter size of batch:")
+
+	if batch_number < 3:
+		print("-----------------------------Warning!!!!!!!!!----------------------------------")
+		print ("Please enter number of batch greater than 2")
+		sys.exit()
 
 	# Get batch results of mean and 95th percentile of nonRT and RT
 	R_RT_mean, R_nonRT_mean, RT_95percent, nonRT_95percent = simulation(int(mean_at_RT),int(mean_at_nonRT),int(mean_st_RT),int(mean_st_nonRT),int(batch_number), int(batch_size))
