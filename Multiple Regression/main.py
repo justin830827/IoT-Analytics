@@ -31,7 +31,7 @@ def chisquare_test(x):
     print ("\nRunning chisquare test.........")
     k2, p = stats.normaltest(x)
     alpha = 0.05
-    print(f'We have p-value is {p}')
+    print('We have p-value is {}'.format(p))
     
     if p > alpha:
         print("Not Significant Result, failed to reject the null hypothesis")
@@ -68,16 +68,16 @@ def plot_LR(X, Y, Y_pred, title):
 
 def plot_qqplot(error, var, title):
     sm.qqplot(error,loc=0,scale=np.sqrt(var),line='q')
-    plt.title(f'{title} Q_Q plot')
-    plt.savefig(f'{title} Q_Q plot.png')
+    plt.title('{} Q_Q plot'.format(title))
+    plt.savefig('{} Q_Q plot.png'.format(title))
     plt.close()
 
 def plot_scatter(error, y_predict, title):
     plt.scatter(error,y_predict)
     plt.xlabel('residuals')
     plt.ylabel('y')
-    plt.title(f'{title} scatter plot.png')
-    plt.savefig(f'{title} scatter plot.png')
+    plt.title('{} scatter plot.png'.format(title))
+    plt.savefig('{} scatter plot.png'.format(title))
     plt.close()
 
 
@@ -126,7 +126,7 @@ def main():
     # Task 2.4 Residuals analysis
     error = compute_error(y,y_predict)
     error_var = np.var(error)
-    print (f'\nError variance: {error_var}')
+    print ('\nError variance: {}'.format(error_var))
     chisquare_test(error)
     plot_hist(error, "Residuals(simple)")
     plot_qqplot(error, error_var, "Residuals(simple)")
@@ -148,7 +148,7 @@ def main():
     # Residuals analysis
     error = compute_error(y,y_predict)
     error_var = np.var(error)
-    print (f'\nError variance: {error_var}')
+    print ('\nError variance: {}'.format(error_var))
     chisquare_test(error)
     plot_hist(error, "Residuals(poly)")
     plot_qqplot(error, error_var, "Residuals(poly)")
@@ -166,7 +166,7 @@ def main():
     # Residuals analysis
     error = compute_error(y,y_predict)
     error_var = np.var(error)
-    print (f'\nError variance: {error_var}')
+    print ('\nError variance: {}'.format(error_var))
     chisquare_test(error)
     plot_hist(error, "Residuals(multi)")
     plot_qqplot(error, error_var, "Residuals(multi)")
@@ -183,7 +183,7 @@ def main():
     # Residuals analysis
     error = compute_error(y,y_predict)
     error_var = np.var(error)
-    print (f'\nError variance: {error_var}')
+    print ('\nError variance: {}'.format(error_var))
     chisquare_test(error)
     plot_hist(error, "Residuals(multi_improved)")
     plot_qqplot(error, error_var, "Residuals(multi_improved)")
