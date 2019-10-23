@@ -41,8 +41,8 @@ def chisquare_test(x):
 
 def plot_hist(x, title):
     plt.hist(x, bins=20)
-    plt.title(f'{title} histgram')
-    plt.savefig(f'{title} histgram.png')
+    plt.title('{} histgram'.format(title))
+    plt.savefig('{} histgram.png'.format(title))
     plt.close()
 
 def plot_cor_matrix(data):
@@ -63,7 +63,7 @@ def plot_LR(X, Y, Y_pred, title):
     plt.title(title)
     plt.xlabel('x1')
     plt.ylabel('y')
-    plt.savefig(f'{title}.png')
+    plt.savefig('{}.png'.format(title))
     plt.close()
 
 def plot_qqplot(error, var, title):
