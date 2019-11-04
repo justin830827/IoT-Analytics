@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[68]:
+# In[1]:
 
 
 # Import packages
@@ -50,13 +50,74 @@ data.describe()
 
 
 def plot_timeseries(data, title):
+    mean = np.mean(data)
     plt.figure(figsize=(15,6))
     plt.plot(data)
+    plt.axhline(y=mean,linewidth=4, color='r')
     plt.xlabel('Time')
     plt.ylabel('Temperature (F)')
     plt.title(title)
+    plt.savefig('{}.png'.format(title))
     
-plot_timeseries(data, 'Temp. Time Series plot')
+plot_timeseries(data['Temperature'], 'Temp. Time Series plot')
+
+
+# In[4]:
+
+
+data['diff'] = data['Temperature'] - data['Temperature'].shift(1)
+plot_timeseries(data['diff'], 'Temp. Time Series plot (diff1)')
+
+
+# In[5]:
+
+
+data['diff2'] = data['diff'] - data['diff'].shift(1)
+plot_timeseries(data['diff2'], 'Temp. Time Series plot (diff2)')
+
+
+# In[6]:
+
+
+data['log'] = np.log(data['Temperature'])
+plot_timeseries(data['log'], 'Temp. Time Series plot (log)')
+
+
+# In[7]:
+
+
+data['log_diff'] = data['log'] - data['log'].shift(1)
+plot_timeseries(data['log_diff'], 'Temp. Time Series plot (log&diff)')
+
+
+# In[8]:
+
+
+data['Temperature'].hist()
+
+
+# In[9]:
+
+
+data['diff'].hist()
+
+
+# In[10]:
+
+
+data['diff2'].hist()
+
+
+# In[11]:
+
+
+data['log'].hist()
+
+
+# In[12]:
+
+
+data['log_diff'].hist()
 
 
 # ### Test the data if stationary
@@ -69,7 +130,7 @@ plot_timeseries(data, 'Temp. Time Series plot')
 # * p-value > 0.05: Fail to reject the null hypothesis (H0), the data has a unit root and is non-stationary.
 # * p-value <= 0.05: Reject the null hypothesis (H0), the data does not have a unit root and is stationary.
 
-# In[4]:
+# In[13]:
 
 
 def Augmented_DickeyFuller_test(x):
@@ -80,7 +141,8 @@ def Augmented_DickeyFuller_test(x):
     for key, value in result[4].items():
         print('\t%s: %.3f' % (key, value))
 
-Augmented_DickeyFuller_test(data['Temperature'])
+trans_data = data['log'].dropna()
+Augmented_DickeyFuller_test(trans_data)
 
 
 # Running the temperature data prints the test statistic value of -4. The more negative this statistic, the more likely we are to reject the null hypothesis (we have a stationary dataset).
@@ -93,21 +155,21 @@ Augmented_DickeyFuller_test(data['Temperature'])
 
 # ## Task 2. Fit a simple moving average model (using the training set)
 
-# In[65]:
+# In[14]:
 
 
 def data_split(data):
     rows = len(data.index)
-    train = data['Temperature'][:int(rows*0.7)]
-    test = data['Temperature'][int(rows*0.7)+1:].reset_index().drop(columns=['index']).iloc[:,0]
+    train = data[:int(rows*0.7)].reset_index().drop(columns=['index']).iloc[:,0]
+    test = data[int(rows*0.7)+1:].reset_index().drop(columns=['index']).iloc[:,0]
     return train, test
 
-train, test = data_split(data)
+train, test = data_split(trans_data)
 
 
 # ### Task 2.1 Apply the simple moving average model to the training data set, for a given k.
 
-# In[30]:
+# In[15]:
 
 
 def SMA(data, k):
@@ -120,7 +182,7 @@ def SMA(data, k):
 # ### Task 2.2 Calculate the error, i.e., the difference between the predicted and original value in the training data set, and compute the root mean squared error (RMSE).
 # ### Task 2.3 Repeat the above two steps by varying k and calculate the RMSE.
 
-# In[79]:
+# In[16]:
 
 
 def RMSE(actual, predict):
@@ -137,7 +199,7 @@ for k in windows:
 
 # ### Task 2.4 Plot RMSE vs k. Select k based on the lowest RMSE value. For the best value of k plot the predicted values against the original values.
 
-# In[32]:
+# In[17]:
 
 
 # Plot RMSE vs k.
@@ -150,7 +212,7 @@ plt.title('SMA k selection')
 print('Minumum RMSE value is {}, when k = {}'.format(min(sma_rmse), windows[sma_rmse.index(min(sma_rmse))]))
 
 
-# In[33]:
+# In[18]:
 
 
 def plot_org_vs_est(org, est, model, param):
@@ -165,31 +227,31 @@ def plot_org_vs_est(org, est, model, param):
     fig.savefig('{} {} Original vs Estimate.png'.format(model, param))
 
 
-# In[34]:
+# In[19]:
 
 
 # Knee point
 k = 20
 actual = train[k:]
 predict = SMA(train, k)[k:]
-plot_org_vs_est(actual, predict, 'SMA', 'k=20')
+plot_org_vs_est(actual, predict, 'SMA train data', 'k=20')
 
 
-# In[35]:
+# In[20]:
 
 
 k = 1
 actual = train[k:]
 predict = SMA(train, k)[k:]
 # Plot Original vs Predict
-plot_org_vs_est(actual, predict, 'SMA', 'k=1')
+plot_org_vs_est(actual, predict, 'SMA train data', 'k=1')
 
 
 # ## Task 3. Fit an exponential smoothing model (use the training set)
 
 # ### Task3.1 Apply the exponential smoothing mode to the training data set for α =0.1.
 
-# In[36]:
+# In[21]:
 
 
 def EMA(data, alpha=0.1):
@@ -204,7 +266,7 @@ def EMA(data, alpha=0.1):
 
 # ### Task 3.3 Repeat steps 2.1 and 2.2 by increasing a each time by 0.1, until a = 0.9.
 
-# In[37]:
+# In[22]:
 
 
 ema_rmse = []
@@ -216,7 +278,7 @@ for a in alpha:
 
 # ### Task 3.4 Plot RMSE vs a. Select a based on the lowest RMSE value.
 
-# In[38]:
+# In[23]:
 
 
 # Plot RMSE vs k.
@@ -231,29 +293,29 @@ print('Minumum RMSE value is {}, when alpha = {}'.format(min(ema_rmse), alpha[em
 
 # ### Task 3.5 For the selected value of a plot the predicted values against the original values, and visually inspect the accuracy of the forecasting model.
 
-# In[39]:
+# In[24]:
 
 
 alpha = 0.1
 actual = train.copy()
 predict = EMA(train,alpha)
-plot_org_vs_est(actual, predict, 'EMA', 'alpha=0.1')
+plot_org_vs_est(actual, predict, 'EMA train data', 'alpha=0.1')
 
 
-# In[40]:
+# In[25]:
 
 
 alpha = 0.9
 actual = train.copy()
 predict = EMA(train,alpha)
-plot_org_vs_est(actual, predict, 'EMA', 'alpha=0.9')
+plot_org_vs_est(actual, predict, 'EMA train data', 'alpha=0.9')
 
 
 # ## Task 4. Fit an AR(p) model (use the training set)
 
 # ### Task 4.1 First select the order p of the AR model by plotting PACF in order to determine the lag k at which PACF cuts off, as discussed in section 6.4.4.
 
-# In[41]:
+# In[26]:
 
 
 plot_pacf(train,lags=30, title='PACF')
@@ -272,7 +334,7 @@ for i in range(0,len(lag_pacf)):
 
 # ### Task 4.2 Estimate the parameters of the AR(p) model. Provide RMSE value and a plot the predicted values against the original values.
 
-# In[71]:
+# In[27]:
 
 
 AR = ARIMA(train, order=(p, 0, 0)) 
@@ -280,14 +342,14 @@ AR_fit = AR.fit()
 print(AR_fit.summary())
 
 
-# In[88]:
+# In[28]:
 
 
 AR_RMSE = np.sqrt(np.mean(AR_fit.resid ** 2))
 print('RSME of AR model with train data: {}'.format(AR_RMSE))
 predict = AR_fit.fittedvalues
 actual = train.copy()
-plot_org_vs_est(actual, predict, 'AR', 'p=3')
+plot_org_vs_est(actual, predict, 'AR train data', 'p={}'.format(p))
 
 
 # ### Task 4.3 Carry out a residual analysis to verify the validity of the model.
@@ -295,7 +357,7 @@ plot_org_vs_est(actual, predict, 'AR', 'p=3')
 # 
 # b. Do a scatter plot of the residuals to see if there are any correlation trends.
 
-# In[92]:
+# In[29]:
 
 
 def plot_qqplot(error, title):
@@ -327,42 +389,45 @@ def plot_scatter(error, y_predict, title):
 plot_qqplot(AR_fit.resid, 'AR residuals')
 chisquare_test(AR_fit.resid)
 plot_scatter(AR_fit.resid, AR_fit.fittedvalues, 'AR residuals')
+AR_fit.resid.hist()
 
 
 # ## Task 5. Comparison of all the models (use the testing set)
 
-# In[66]:
+# In[30]:
 
 
 k = 1
 actual = test[k:]
 predict = SMA(test, k)[k:]
 # Plot Original vs Predict
-plot_org_vs_est(actual, predict, 'SMA', 'k=1')
-RMSE(actual, predict)
+plot_org_vs_est(actual, predict, 'SMA test data', 'k={}'.format(k))
+SMA_RMSE = RMSE(actual, predict)
+print('RSME of SMA model with test data: {}'.format(SMA_RMSE))
 
 
-# In[67]:
+# In[31]:
 
 
 alpha = 0.9
 actual = test.copy()
 predict = EMA(test,alpha)
-plot_org_vs_est(actual, predict, 'EMA', 'alpha=0.9')
-RMSE(actual, predict)
+plot_org_vs_est(actual, predict, 'EMA test data', 'alpha={}'.format(alpha))
+EM_RMSE = RMSE(actual, predict)
+print('RSME of EM model with test data: {}'.format(EM_RMSE))
 
 
-# In[94]:
+# In[33]:
 
 
 p = 3
 AR = ARIMA(test, order=(p, 0, 0)) 
 AR_fit = AR.fit()
 AR_RMSE = np.sqrt(np.mean(AR_fit.resid ** 2))
-print('RSME of AR model with train data: {}'.format(AR_RMSE))
+print('RSME of AR model with test data: {}'.format(AR_RMSE))
 predict = AR_fit.fittedvalues
 actual = test.copy()
-plot_org_vs_est(actual, predict, 'AR', 'p=3')
+plot_org_vs_est(actual, predict, 'AR test data','p={}'.format(p))
 
 
 # In[ ]:
