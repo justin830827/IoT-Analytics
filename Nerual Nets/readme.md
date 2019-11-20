@@ -2,36 +2,24 @@
 
 This script has been tested on python 3.7.3, please at least python >= 3.6 to make sure the script run properly. Also, please install the required packages in the `requirements.txt` by run the following command.
 
-If your platform is Linux/MacOS
-
-```
-pip3 install -r requirements.txt
-```
-
-Or in Windows.
-
-```
-pip install -r requirements.txt
-```
-
 ## How to run the code
 
 After installed the requirements file, run the command as below.
 If your platform is Linux/MacOS
 
 ```
-python3 nerualnets.py
+python3 NeuralNet.py
 ```
 
 Or in Windows.
 
 ```
-python nerualnets.py
+python NeuralNet.py
 ```
 
-The graph and table results will be propagated under the same folder as `nerualnets.py`, and terimal will display the statistics analysis.
+The graph and table results will be propagated under the same folder as `NeuralNet.py`, and terimal will display the statistics analysis.
 
-Although there is no problem when running `nerualnets.py`, I do recommend to run this file through the Python notebook as `nerualnets.ipynb`.
+Although there is no problem when running `NeuralNet.py`, I do recommend to run this file through the Python notebook as `nerualnets.ipynb`.
 Please install the jupyter notebook by the following instructions.
 If your platform is Linux/MacOS.
 
