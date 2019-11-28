@@ -1,21 +1,27 @@
+## Install required packages
+
+To install the required packages for this project. Please run the following command,
+
+```
+pip3 install -r requirements.txt
+```
+
 ## How to run the code
 
 After installed the requirements file, run the command as below.
 If your platform is Linux/MacOS
 
 ```
-python3 nerualnets.py
+python3 HMM.py
 ```
 
 Or in Windows.
 
 ```
-python nerualnets.py
+python HMM.py
 ```
 
-The graph and table results will be propagated under the same folder as `hmm.py`, and terimal will display the statistics analysis.
-
-Although there is no problem when running `hmm.py`, I do recommend to run this file through the Python notebook as `hmm.ipynb`.
+Although there is no problem when running `HMM.py`, I do recommend to run this file through the Python notebook as `./ipynb/HMM.ipynb`.
 Please install the jupyter notebook by the following instructions.
 If your platform is Linux/MacOS.
 
@@ -39,4 +45,4 @@ The notebook will start on your browser and navigate to this project directory a
 
 ## Results
 
-The `Results.pdf` contain all the visuals and comments for this project. All the visuals used in the pdf file are in `./graph` folder.
+The `Results.pdf` contain all the visuals and comments for this project.
